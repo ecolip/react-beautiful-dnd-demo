@@ -24,7 +24,15 @@ type dataType = {
 };
 
 function Demo1 () {
-  const [list, setList] = useState<dataType[] | null>(null);
+  const [list, setList] = useState<dataType[] | []>([]);
+
+  const onDragEnd = (result:any) => {
+    const newItems = Array.from(list);
+    const [removed] = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, removed);
+    console.log(newItems); // 拖曳結果
+    setList(newItems);
+  };
 
   useEffect(() => {
     setList(data);
@@ -32,19 +40,7 @@ function Demo1 () {
 
   return (
     <DragDropContext
-      onDragEnd={(result:any) => {
-        console.log(result);
-        const { source, destination, draggableId } = result;
-        if (!destination) {
-          return;
-        }
-
-        let arr = Array.from(data);
-        console.log(arr);
-        const [remove] = arr.splice(source.index, 1);
-        arr.splice(destination.index, 0, remove);
-        setList(arr);
-      }}
+      onDragEnd={onDragEnd}
     >
       <Droppable droppableId="droppable-1">
         {(provided:any) => (
