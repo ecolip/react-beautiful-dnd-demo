@@ -4,6 +4,7 @@ import data from "../../data";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Container = styled.div`
+  display: flex; // 設定成horizontal sort, 如果要vertical就移掉
   border: 1px solid #ddd;
   border-radius: 3px;
   padding: 8px;
@@ -38,11 +39,12 @@ function Demo1 () {
     setList(data);
   }, []);
 
+  //如果要vertical就移掉direction="horizontal"
   return (
     <DragDropContext
       onDragEnd={onDragEnd}
     >
-      <Droppable droppableId="droppable-1">
+      <Droppable droppableId="droppable-1" direction="horizontal">
         {(provided:any) => (
           <Container ref={provided.innerRef} {...provided.droppableProps}>
             {list &&
